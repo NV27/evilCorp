@@ -9,18 +9,29 @@
 </html>
 
 <?php
-class PhysicalProduct{
 
+abstract class Product{
     public string $name;
-    public int $price;
-    public float $weight;
+    public float $price;
     public string $description;
 
-    public function __construct(string $name, float $price, float $weight, string $description){
+    protected function __construct(string $name, float $price, string $description){
         $this->name = $name;
         $this->price = $price;
-        $this->weight = $weight;
         $this->description = $description;
+        }
+
+    protected abstract function getDisplay();
+    protected abstract function getShippingPrice();
+}
+
+class PhysicalProduct extends Product {
+
+    public float $weight;
+
+    public function __construct(string $name, float $price, float $weight, string $description){
+        parent::__construct($name, $price, $description);
+        $this->weight = $weight;
     }
 
     public function getDisplay(){
@@ -56,19 +67,15 @@ class PhysicalProduct{
 
 }
 
-class VirtualProduct{
-    public string $name;
-    public float $price;
+class VirtualProduct extends Product {
+
     public float $fileSize;
     public string $fileType;
-    public string $description;
 
     public function __construct(string $name, float $price, float $fileSize, string $fileType, string $description){
-        $this->name = $name;
-        $this->price = $price;
+        parent::__construct($name, $price, $description);
         $this->fileSize = $fileSize;
         $this->fileType = $fileType;
-        $this->description = $description;
     }
 
     public function getDisplay() : void{
@@ -126,7 +133,7 @@ class Basket{
 
     public array $itemList = [];
 
-    function addItem(object $item) : void{
+    function addItem(Product $item) : void{
         array_push($this->itemList, $item);
     }
 
