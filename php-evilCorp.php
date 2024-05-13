@@ -5,6 +5,18 @@
 <body>
 <h1>Evil Corp</h1>
 <br>
+<form>
+    <label for="products">Pick a product </label>
+    <select id="products" name="products">
+        <option value="bananaMachine">Banana Machine</option>
+        <option value="lilGuy">Lil Guy</option>
+        <option value="videoGame">Mysterious Videogame</option>
+        <option value="picture">Picture of a Duck</option>
+    </select>
+    <input type="submit" name="submit" value="Search">
+
+</form>
+<br>
 </body>
 </html>
 
@@ -176,21 +188,53 @@ function getInfo(object $product){
     $product->getShippingPrice();
 }
 
-getInfo($bananaMachine);
-getInfo($lilGuy);
-getInfo($mysteriousVideoGame);
-getInfo($pictureOfADuck);
-
-$steve->getDisplay();
-$sandy->getDisplay();
-
 $myBasket->addItem($lilGuy);
-$myBasket->addItem($mysteriousVideoGame);
-$myBasket->addItem($mysteriousVideoGame);
-$myBasket->addItem($bananaMachine);
 
-$myBasket->removeItem($mysteriousVideoGame);
-$myBasket->getDisplay();
+if (isset($_GET['submit'])){
 
-$myBasket->getTotalPrice();
+//    var_dump($_GET);
+    $key = $_GET['products'];
+    $id = null;
+
+    if ($key == 'bananaMachine'){
+        $id = $bananaMachine;
+    }
+    else if ($key == 'lilGuy'){
+        $id = $lilGuy;
+    }
+    else if ($key == 'videoGame'){
+        $id = $mysteriousVideoGame;
+    }
+    else if ($key == 'picture'){
+        $id = $pictureOfADuck;
+    }
+
+    getInfo($id);
+
+    echo '
+        <br>
+        <form>
+        <input type="submit" value="Add to Basket" name="basketAdd">
+        <input type="submit" value="Remove From Basket" name="basketRemove">
+        <input type="submit" value="Show Basket" name="basketShow">
+        </form>
+        
+    ';
+
+}
+
+if (isset($_GET['basketAdd'])){
+    $myBasket->addItem($pictureOfADuck);
+}
+
+if (isset($_GET['basketAdd'])){
+    $myBasket->addItem($pictureOfADuck);
+}
+
+if (isset($_GET['basketShow'])){
+    $myBasket->getDisplay();
+
+    echo '<input type="submit" name="submit" value="Back">';
+}
+
 ?>
